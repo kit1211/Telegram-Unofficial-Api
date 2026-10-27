@@ -11,7 +11,7 @@
 | [feature-gap.md](./feature-gap.md) | เทียบฟีเจอร์ product vs สถานะ repo |
 | [webk-features.md](./webk-features.md) | Reverse WebK: Reactions, Scheduled, Chatlist, Stories, Stickers, Communities, E2E |
 | [group-members-dump.md](./group-members-dump.md) | Dump/invite สมาชิก CSV: limit ต่อ RPC (~200), ~10k/filter, FLOOD_WAIT |
-| [api-jobs.md](./api-jobs.md) | REST `/v1/jobs` + Redis/BullMQ worker, UUID v7, multi-account dump |
+| [api-jobs.md](./api-jobs.md) | REST `/v1/jobs` + Redis/BullMQ worker, UUID v7, dump/invite (offset, invite link) |
 
 ## หลักการ
 

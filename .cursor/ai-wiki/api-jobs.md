@@ -34,7 +34,7 @@ Env: `.env.example` — `REDIS_URL`, `PORT`, `WORKER_CONCURRENCY`
 | type | params หลัก |
 |------|-------------|
 | `member.dump` | `username`, `pageLimit?` (200), `pageDelayMs?` (1000), `accounts?` |
-| `member.invite` | `targetUsername`, `sourceJobId` หรือ `csvPath`, `account?`, `limit`, `delayMs`, `batch` |
+| `member.invite` | `targetUsername` (username หรือลิงก์ `+…` / `t.me/+…`), `sourceJobId` หรือ `csvPath`, `account?`, `limit`, `delayMs`, `batch`, `offset?` (ข้าม N แถวแรกของ CSV) |
 | `auth.phone` | `phone`, `account?` |
 | `auth.qr` | `account?` |
 | `profile.self` | `account?` |
@@ -53,6 +53,14 @@ Env: `.env.example` — `REDIS_URL`, `PORT`, `WORKER_CONCURRENCY`
 - filter ที่ทำจบครบแล้ว resume ได้ 409
 - หลายบัญชี: `accounts` ใน request หรือทุกแถวใน SQLite; round-robin ต่อ filter
 - ทุกหน้า log `[dump] account=… filter=… got=… limit=… offset=… unique=…` และเขียน `progress.lastFetchCount`
+
+## Invite สมาชิก
+
+- **`targetUsername`**: `@channel`, `channel`, หรือ **invite link** (`+AbCd…`, `https://t.me/+AbCd…`) — resolve ผ่าน `messages.checkChatInvite` / `messages.importChatInvite` ใน `resolveChannel` (`src/jobs/mtproto-utils.ts`)
+- **`offset`**: ข้ามแถว CSV N แถวแรก (ต่อ job หลัง job อื่นใช้หัวไฟล์ไปแล้ว)
+- **`access_hash` ใน CSV**: ใช้ได้ถ้า dump ด้วยบัญชีเดียวกับที่เชิญ; ไม่มี username ก็ลอง hash จาก CSV ก่อน resolve username
+- Progress: `inviteRpcOk` (RPC สำเร็จ), `channelMembersStart` / `channelMembers`, `membersJoinedDelta` (นับจาก `channels.getFullChannel` — RPC ok ไม่เท่ากับ join ทุกครั้ง)
+- **`FLOOD_WAIT`**: คิว job ใหม่ด้วย delay แทน sleep ใน worker — worker ว่างไป job อื่นได้
 
 ## จัดการกลุ่มและ topic
 

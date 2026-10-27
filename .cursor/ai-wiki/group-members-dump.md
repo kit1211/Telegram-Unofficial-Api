@@ -65,13 +65,16 @@ Dump กับ invite **คนละ bucket**:
 | `--batch` | **5** | user ต่อ 1 ครั้ง `channels.inviteToChannel` — supergroup สูงสุด **20**/ครั้ง (TDLib), broadcast channel สูงสุด **100**/ครั้ง; เกินแล้ว `USERS_TOO_MUCH` |
 | `--limit` | **10** | จำนวนแถวสูงสุดจาก CSV ต่อรัน |
 | `--delay-ms` | **2000** | หน่วงระหว่าง batch |
+| API `offset` | **0** | ข้าม N แถวแรกของ CSV (Mac branch) |
+
+เป้าหมาย invite รองรับ **ลิงก์เชิญ** (`+hash`) ไม่ใช่แค่ public username
 
 Error ที่หยุดรัน invite:
 
 - **`PEER_FLOOD`** — anti-spam บัญชี (เชิญคนแปลกหน้า / bulk). ทดสอบ local: หยุดหลัง **~10** คนในรอบเดียว แล้วคิวต่ออีก ~1 ชม. ลด `delayMs` หรือเพิ่ม `batch` ไม่ยกเพดานนี้ — เพดานนับคนต่อบัญชีต่อรอบ
-- **`FLOOD_WAIT_*`** — rate limit ทั่วไป
+- **`FLOOD_WAIT_*`** — requeue job ด้วย delay (ไม่ block worker)
 
-`access_hash` ใน CSV **ผูกกับบัญชีที่ dump** และ cache `job:{id}:invite-hash:{accountId}` ใช้ข้ามบัญชีไม่ได้ — คนที่มี username ถูก resolve ใหม่ด้วยบัญชีที่เชิญ; คนไม่มี username ถูกข้าม
+`access_hash` ใน CSV **ผูกกับบัญชีที่ dump** — ข้ามบัญชีต้อง resolve จาก username หรือ dump ใหม่ด้วยบัญชีที่เชิญ; cache `job:{id}:invite-hash:{accountId}`
 
 ---
 

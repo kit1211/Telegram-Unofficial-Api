@@ -13,6 +13,7 @@
 - `bun run dev` + `bun run dev:worker` — API + worker (ต้องรันคู่กัน)
 - `bun run login:phone` / `login:qr` — CLI (ยังมี); แนะนำ `POST /v1/jobs` type `auth.*`
 - Dump/invite: `POST /v1/jobs` `member.dump` / `member.invite` — ดู [group-members-dump.md](./group-members-dump.md)
+- Forward โพสต์ช่วงวันที่: `bun run scripts/forward-channel-range.ts` (album batch, caption ไฟล์, delay สุ่ม) — CLI จาก Mac branch
 
 ## สถานะ
 
