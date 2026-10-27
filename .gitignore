@@ -40,3 +40,31 @@ yarn-error.log*
 **/*.log
 package-lock.json
 **/*.bun
+
+# Telegram session / auth (see .cursor/ai-wiki/session-multi-account.md)
+.telegram/
+.telegram-login-pending.json
+.telegram-session
+.telegram-session/
+.telegram-session.sqlite
+.telegram-session.sqlite-*
+.telegram-session-*.sqlite
+.telegram-session-*.sqlite-*
+/data/
+*.members.csv
+/data/jobs/
+
+# local agent / conversation (may contain PII)
+log.md
+.cursor/hotcache.md
+
+# env secrets
+.env
+
+# large / local-only assets
+*.mp4
+llms-full.txt
+poc/
+
+
+/poc/

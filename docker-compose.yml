@@ -1,0 +1,43 @@
+services:
+  redis:
+    image: redis:7-alpine
+    command: redis-server --appendonly yes
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: bun run start
+    environment:
+      REDIS_URL: redis://redis:6379
+      PORT: "3000"
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./.telegram:/app/.telegram
+      - ./data:/app/data
+    depends_on:
+      - redis
+
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: bun run worker
+    environment:
+      REDIS_URL: redis://redis:6379
+      WORKER_CONCURRENCY: "4"
+    volumes:
+      - ./.telegram:/app/.telegram
+      - ./data:/app/data
+    depends_on:
+      - redis
+    deploy:
+      replicas: 1
+
+volumes:
+  redis_data:

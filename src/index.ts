@@ -1,7 +1,8 @@
-import { Elysia } from "elysia";
+import { buildApp } from "./server/app";
 
-const app = new Elysia().get("/", () => "Hello Elysia").listen(3000);
+const port = Number(process.env.PORT ?? 3000);
+const app = buildApp().listen(port);
 
 console.log(
-  `🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`
+  `telegram-reverse at http://${app.server?.hostname}:${app.server?.port}`,
 );

@@ -1,0 +1,434 @@
+{
+  "reactions": {
+    "webk_managers": [
+      "appReactionsManager"
+    ],
+    "architecture": {
+      "worker": "index.worker-Ccu9tVP2.js — TL layer + invokeApi + *Manager",
+      "main_thread": "index-BUtITCqw.js / apiManagerProxy — UI, lazy chunks, worker RPC"
+    },
+    "ui_chunks": [],
+    "catalog_rpc": [
+      "account.getReactionsNotifySettings",
+      "account.setReactionsNotifySettings",
+      "messages.availableReactions",
+      "messages.availableReactionsNotModified",
+      "messages.clearRecentReactions",
+      "messages.deleteParticipantReaction",
+      "messages.deleteParticipantReactions",
+      "messages.getAvailableReactions",
+      "messages.getDefaultTagReactions",
+      "messages.getMessageReactionsList",
+      "messages.getMessagesReactions",
+      "messages.getPaidReactionPrivacy",
+      "messages.getRecentReactions",
+      "messages.getSavedReactionTags",
+      "messages.getTopReactions",
+      "messages.getUnreadReactions",
+      "messages.messageReactionsList",
+      "messages.reactions",
+      "messages.reactionsNotModified",
+      "messages.readReactions",
+      "messages.reportReaction",
+      "messages.savedReactionTags",
+      "messages.savedReactionTagsNotModified",
+      "messages.sendPaidReaction",
+      "messages.sendReaction",
+      "messages.setChatAvailableReactions",
+      "messages.setDefaultReaction",
+      "messages.togglePaidReactionPrivacy",
+      "messages.updateSavedReactionTag",
+      "stories.getStoryReactionsList",
+      "stories.sendReaction",
+      "stories.storyReactionsList"
+    ],
+    "worker_tl_literals": [
+      "account.getReactionsNotifySettings",
+      "account.setReactionsNotifySettings",
+      "messages.availableReactions",
+      "messages.availableReactionsNotModified",
+      "messages.clearRecentReactions",
+      "messages.deleteParticipantReaction",
+      "messages.deleteParticipantReactions",
+      "messages.getAvailableReactions",
+      "messages.getDefaultTagReactions",
+      "messages.getMessageReactionsList",
+      "messages.getMessagesReactions",
+      "messages.getPaidReactionPrivacy",
+      "messages.getRecentReactions",
+      "messages.getSavedReactionTags",
+      "messages.getTopReactions",
+      "messages.getUnreadReactions",
+      "messages.messageReactionsList",
+      "messages.reactions",
+      "messages.reactionsNotModified",
+      "messages.readReactions",
+      "messages.reportReaction",
+      "messages.savedReactionTags",
+      "messages.savedReactionTagsNotModified",
+      "messages.sendPaidReaction",
+      "messages.sendReaction",
+      "messages.setChatAvailableReactions",
+      "messages.setDefaultReaction",
+      "messages.togglePaidReactionPrivacy",
+      "messages.updateSavedReactionTag",
+      "stories.getStoryReactionsList",
+      "stories.sendReaction",
+      "stories.storyReactionsList"
+    ],
+    "worker_invokeApi": [
+      "account.getReactionsNotifySettings",
+      "account.setReactionsNotifySettings",
+      "messages.getSavedReactionTags",
+      "messages.sendPaidReaction",
+      "messages.sendReaction",
+      "messages.setChatAvailableReactions",
+      "messages.setDefaultReaction",
+      "messages.togglePaidReactionPrivacy",
+      "messages.updateSavedReactionTag"
+    ],
+    "notes": []
+  },
+  "scheduled": {
+    "webk_managers": [
+      "appMessagesManager",
+      "appDraftsManager"
+    ],
+    "architecture": {
+      "worker": "index.worker-Ccu9tVP2.js — TL layer + invokeApi + *Manager",
+      "main_thread": "index-BUtITCqw.js / apiManagerProxy — UI, lazy chunks, worker RPC"
+    },
+    "ui_chunks": [
+      "schedulers-CsiwybLM.js"
+    ],
+    "catalog_rpc": [
+      "messages.deleteScheduledMessages",
+      "messages.getScheduledHistory",
+      "messages.getScheduledMessages",
+      "messages.sendScheduledMessages",
+      "phone.startScheduledGroupCall"
+    ],
+    "worker_tl_literals": [
+      "messages.deleteScheduledMessages",
+      "messages.getScheduledHistory",
+      "messages.getScheduledMessages",
+      "messages.sendScheduledMessages",
+      "phone.startScheduledGroupCall"
+    ],
+    "worker_invokeApi": [
+      "messages.deleteScheduledMessages",
+      "messages.sendScheduledMessages"
+    ],
+    "notes": [
+      "สร้างข้อความตั้งเวลา: messages.sendMessage + schedule_date; RPC scheduled ใช้ list/send/delete คิว"
+    ]
+  },
+  "chatlists": {
+    "webk_managers": [
+      "appChatInvitesManager",
+      "appChatsManager"
+    ],
+    "architecture": {
+      "worker": "index.worker-Ccu9tVP2.js — TL layer + invokeApi + *Manager",
+      "main_thread": "index-BUtITCqw.js / apiManagerProxy — UI, lazy chunks, worker RPC"
+    },
+    "ui_chunks": [],
+    "catalog_rpc": [
+      "chatlists.chatlistInvite",
+      "chatlists.chatlistInviteAlready",
+      "chatlists.chatlistUpdates",
+      "chatlists.checkChatlistInvite",
+      "chatlists.deleteExportedInvite",
+      "chatlists.editExportedInvite",
+      "chatlists.exportChatlistInvite",
+      "chatlists.exportedChatlistInvite",
+      "chatlists.exportedInvites",
+      "chatlists.getChatlistUpdates",
+      "chatlists.getExportedInvites",
+      "chatlists.getLeaveChatlistSuggestions",
+      "chatlists.hideChatlistUpdates",
+      "chatlists.joinChatlistInvite",
+      "chatlists.joinChatlistUpdates",
+      "chatlists.leaveChatlist"
+    ],
+    "worker_tl_literals": [
+      "chatlists.chatlistInvite",
+      "chatlists.chatlistInviteAlready",
+      "chatlists.chatlistUpdates",
+      "chatlists.checkChatlistInvite",
+      "chatlists.deleteExportedInvite",
+      "chatlists.editExportedInvite",
+      "chatlists.exportChatlistInvite",
+      "chatlists.exportedChatlistInvite",
+      "chatlists.exportedInvites",
+      "chatlists.getChatlistUpdates",
+      "chatlists.getExportedInvites",
+      "chatlists.getLeaveChatlistSuggestions",
+      "chatlists.hideChatlistUpdates",
+      "chatlists.joinChatlistInvite",
+      "chatlists.joinChatlistUpdates",
+      "chatlists.leaveChatlist"
+    ],
+    "worker_invokeApi": [
+      "chatlists.editExportedInvite"
+    ],
+    "notes": [
+      "Shared folder invite = chatlists.*; UI อาจ lazy-load จาก main bundle ไม่มีชื่อ chatlist ใน chunk"
+    ]
+  },
+  "stories": {
+    "webk_managers": [
+      "appStoriesManager"
+    ],
+    "architecture": {
+      "worker": "index.worker-Ccu9tVP2.js — TL layer + invokeApi + *Manager",
+      "main_thread": "index-BUtITCqw.js / apiManagerProxy — UI, lazy chunks, worker RPC"
+    },
+    "ui_chunks": [],
+    "catalog_rpc": [
+      "stories.activateStealthMode",
+      "stories.albums",
+      "stories.albumsNotModified",
+      "stories.allStories",
+      "stories.allStoriesNotModified",
+      "stories.canSendStory",
+      "stories.canSendStoryCount",
+      "stories.createAlbum",
+      "stories.deleteAlbum",
+      "stories.deleteStories",
+      "stories.editStory",
+      "stories.exportStoryLink",
+      "stories.foundStories",
+      "stories.getAlbumStories",
+      "stories.getAlbums",
+      "stories.getAllReadPeerStories",
+      "stories.getAllStories",
+      "stories.getChatsToSend",
+      "stories.getPeerMaxIDs",
+      "stories.getPeerStories",
+      "stories.getPinnedStories",
+      "stories.getStoriesArchive",
+      "stories.getStoriesByID",
+      "stories.getStoriesViews",
+      "stories.getStoryReactionsList",
+      "stories.getStoryViewsList",
+      "stories.incrementStoryViews",
+      "stories.peerStories",
+      "stories.readStories",
+      "stories.reorderAlbums",
+      "stories.report",
+      "stories.searchPosts",
+      "stories.sendReaction",
+      "stories.sendStory",
+      "stories.startLive",
+      "stories.stories",
+      "stories.storyReactionsList",
+      "stories.storyViews",
+      "stories.storyViewsList",
+      "stories.toggleAllStoriesHidden",
+      "stories.togglePeerStoriesHidden",
+      "stories.togglePinned",
+      "stories.togglePinnedToTop",
+      "stories.updateAlbum"
+    ],
+    "worker_tl_literals": [
+      "stories.activateStealthMode",
+      "stories.albums",
+      "stories.albumsNotModified",
+      "stories.allStories",
+      "stories.allStoriesNotModified",
+      "stories.canSendStory",
+      "stories.canSendStoryCount",
+      "stories.createAlbum",
+      "stories.deleteAlbum",
+      "stories.deleteStories",
+      "stories.editStory",
+      "stories.exportStoryLink",
+      "stories.foundStories",
+      "stories.getAlbumStories",
+      "stories.getAlbums",
+      "stories.getAllReadPeerStories",
+      "stories.getAllStories",
+      "stories.getChatsToSend",
+      "stories.getPeerMaxIDs",
+      "stories.getPeerStories",
+      "stories.getPinnedStories",
+      "stories.getStoriesArchive",
+      "stories.getStoriesByID",
+      "stories.getStoriesViews",
+      "stories.getStoryReactionsList",
+      "stories.getStoryViewsList",
+      "stories.incrementStoryViews",
+      "stories.peerStories",
+      "stories.readStories",
+      "stories.reorderAlbums",
+      "stories.report",
+      "stories.searchPosts",
+      "stories.sendReaction",
+      "stories.sendStory",
+      "stories.startLive",
+      "stories.stories",
+      "stories.storyReactionsList",
+      "stories.storyViews",
+      "stories.storyViewsList",
+      "stories.toggleAllStoriesHidden",
+      "stories.togglePeerStoriesHidden",
+      "stories.togglePinned",
+      "stories.togglePinnedToTop",
+      "stories.updateAlbum"
+    ],
+    "worker_invokeApi": [
+      "stories.createAlbum",
+      "stories.deleteAlbum",
+      "stories.deleteStories",
+      "stories.editStory",
+      "stories.getAlbumStories",
+      "stories.getAlbums",
+      "stories.getStoriesByID",
+      "stories.reorderAlbums",
+      "stories.updateAlbum"
+    ],
+    "notes": []
+  },
+  "stickers": {
+    "webk_managers": [
+      "appStickersManager"
+    ],
+    "architecture": {
+      "worker": "index.worker-Ccu9tVP2.js — TL layer + invokeApi + *Manager",
+      "main_thread": "index-BUtITCqw.js / apiManagerProxy — UI, lazy chunks, worker RPC"
+    },
+    "ui_chunks": [
+      "sticker-WDqb_V35.js",
+      "stickerType-5EyD7iZd.js"
+    ],
+    "catalog_rpc": [
+      "stickers.addStickerToSet",
+      "stickers.changeSticker",
+      "stickers.changeStickerPosition",
+      "stickers.checkShortName",
+      "stickers.createStickerSet",
+      "stickers.deleteStickerSet",
+      "stickers.removeStickerFromSet",
+      "stickers.renameStickerSet",
+      "stickers.replaceSticker",
+      "stickers.setStickerSetThumb",
+      "stickers.suggestShortName",
+      "stickers.suggestedShortName"
+    ],
+    "worker_tl_literals": [
+      "stickers.addStickerToSet",
+      "stickers.changeSticker",
+      "stickers.changeStickerPosition",
+      "stickers.checkShortName",
+      "stickers.createStickerSet",
+      "stickers.deleteStickerSet",
+      "stickers.removeStickerFromSet",
+      "stickers.renameStickerSet",
+      "stickers.replaceSticker",
+      "stickers.setStickerSetThumb",
+      "stickers.suggestShortName",
+      "stickers.suggestedShortName"
+    ],
+    "worker_invokeApi": [],
+    "notes": [
+      "stickers.* ฝังใน TL schema; grep invokeApi(`stickers.`) มักว่าง — เรียกผ่าน invokeApi ทั่วไป"
+    ]
+  },
+  "communities": {
+    "webk_managers": [
+      "appCommunitiesManager"
+    ],
+    "architecture": {
+      "worker": "index.worker-Ccu9tVP2.js — TL layer + invokeApi + *Manager",
+      "main_thread": "index-BUtITCqw.js / apiManagerProxy — UI, lazy chunks, worker RPC"
+    },
+    "ui_chunks": [
+      "communityAddMode-DM9zKtLS.js"
+    ],
+    "catalog_rpc": [
+      "communities.create",
+      "communities.getJoinedCommunities",
+      "communities.getParticipantJoinedChats",
+      "communities.getPeerLinkRequests",
+      "communities.participantJoinedChats",
+      "communities.peerLinkRequests",
+      "communities.toggleAllPeerLinkRequestApproval",
+      "communities.toggleCommunityCollapsedInDialogs",
+      "communities.toggleParticipantBanned",
+      "communities.togglePeerLink",
+      "communities.togglePeerLinkRequestApproval"
+    ],
+    "worker_tl_literals": [
+      "communities.create",
+      "communities.getJoinedCommunities",
+      "communities.getParticipantJoinedChats",
+      "communities.getPeerLinkRequests",
+      "communities.participantJoinedChats",
+      "communities.peerLinkRequests",
+      "communities.toggleAllPeerLinkRequestApproval",
+      "communities.toggleCommunityCollapsedInDialogs",
+      "communities.toggleParticipantBanned",
+      "communities.togglePeerLink",
+      "communities.togglePeerLinkRequestApproval"
+    ],
+    "worker_invokeApi": [
+      "communities.create",
+      "communities.getParticipantJoinedChats",
+      "communities.getPeerLinkRequests",
+      "communities.toggleAllPeerLinkRequestApproval",
+      "communities.toggleCommunityCollapsedInDialogs",
+      "communities.toggleParticipantBanned",
+      "communities.togglePeerLink",
+      "communities.togglePeerLinkRequestApproval"
+    ],
+    "notes": []
+  },
+  "e2e": {
+    "webk_managers": [
+      "appMessagesManager"
+    ],
+    "architecture": {
+      "worker": "index.worker-Ccu9tVP2.js — TL layer + invokeApi + *Manager",
+      "main_thread": "index-BUtITCqw.js / apiManagerProxy — UI, lazy chunks, worker RPC"
+    },
+    "ui_chunks": [
+      "encryptedStorageLayer-OlvUtI5I.js",
+      "passcodeLockScreen-4S_pwIvs.js"
+    ],
+    "catalog_rpc": [
+      "messages.acceptEncryption",
+      "messages.discardEncryption",
+      "messages.readEncryptedHistory",
+      "messages.reportEncryptedSpam",
+      "messages.requestEncryption",
+      "messages.sendEncrypted",
+      "messages.sendEncryptedFile",
+      "messages.sendEncryptedService",
+      "messages.sentEncryptedFile",
+      "messages.sentEncryptedMessage",
+      "messages.setEncryptedTyping",
+      "messages.uploadEncryptedFile",
+      "phone.sendGroupCallEncryptedMessage"
+    ],
+    "worker_tl_literals": [
+      "messages.acceptEncryption",
+      "messages.discardEncryption",
+      "messages.readEncryptedHistory",
+      "messages.reportEncryptedSpam",
+      "messages.requestEncryption",
+      "messages.sendEncrypted",
+      "messages.sendEncryptedFile",
+      "messages.sendEncryptedService",
+      "messages.sentEncryptedFile",
+      "messages.sentEncryptedMessage",
+      "messages.setEncryptedTyping",
+      "messages.uploadEncryptedFile",
+      "phone.sendGroupCallEncryptedMessage"
+    ],
+    "worker_invokeApi": [],
+    "notes": [
+      "Secret chat: requestEncryption → acceptEncryption → sendEncrypted*; encryptedStorageLayer = passcode/local encryption แยกจาก secret chat"
+    ]
+  }
+}

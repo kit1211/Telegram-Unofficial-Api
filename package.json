@@ -3,13 +3,34 @@
   "version": "1.0.50",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "bun run --watch src/index.ts"
+    "test:profile": "bun run scripts/test-profile.ts",
+    "login:phone": "bun run scripts/phone-login.ts",
+    "login:qr": "bun run scripts/qr-login.ts",
+    "session:list": "bun run scripts/session-accounts.ts",
+    "session:import": "bun run scripts/session-import.ts",
+    "session:reset": "bun run scripts/reset-account-session.ts",
+    "reverse:webk-features": "python3 scripts/extract-webk-features.py",
+    "group:dump-csv": "bun run scripts/group-members-csv.ts dump",
+    "group:invite-csv": "bun run scripts/group-members-csv.ts invite",
+    "capture:brave-burp": "./scripts/brave-burp-proxy.sh",
+    "dev": "bun run --watch src/index.ts",
+    "dev:worker": "bun run --watch src/worker.ts",
+    "start": "bun run src/index.ts",
+    "worker": "bun run src/worker.ts",
+    "docker:up": "docker compose up -d redis",
+    "docker:stack": "docker compose up -d redis api worker"
   },
   "dependencies": {
-    "elysia": "latest"
+    "@mtproto/core": "^6.3.0",
+    "bullmq": "^6.5.0",
+    "elysia": "latest",
+    "ioredis": "^6.0.0",
+    "telegram": "2.26.22",
+    "uuidv7": "^1.2.1"
   },
   "devDependencies": {
-    "bun-types": "latest"
+    "bun-types": "latest",
+    "typescript": "5.7"
   },
   "module": "src/index.js"
 }
