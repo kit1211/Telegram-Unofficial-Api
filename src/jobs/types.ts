@@ -102,6 +102,8 @@ export interface MemberInvitePayload {
   limit: number;
   delayMs: number;
   batch: number;
+  /** Skip first N CSV rows (e.g. after another job used the head). */
+  offset?: number;
   accountId?: string;
 }
 

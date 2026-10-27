@@ -29,8 +29,61 @@ export function asError(error: unknown): Error {
   return wrapped;
 }
 
+/** Invite link hash from `https://t.me/+AbCd` or `+AbCd`. */
+export function parseInviteHash(raw: string): string | undefined {
+  const part = raw
+    .trim()
+    .replace(/^@/, "")
+    .replace(/^https:\/\/t\.me\//, "")
+    .split(/[/?#]/)[0];
+  if (part.startsWith("+")) return part.slice(1);
+  return undefined;
+}
+
 export function parseUsername(raw: string): string {
+  const invite = parseInviteHash(raw);
+  if (invite) return `+${invite}`;
   return raw.replace(/^@/, "").replace(/^https:\/\/t\.me\//, "").split("/")[0];
+}
+
+function channelFromInviteCheck(check: AnyRecord): AnyRecord | undefined {
+  if (check._ === "chatInviteAlready") {
+    return check.chat as AnyRecord | undefined;
+  }
+  if (check._ === "chatInvite" || check._ === "chatInvitePeek") {
+    return check.chat as AnyRecord | undefined;
+  }
+  return undefined;
+}
+
+function channelFromUpdates(updates: AnyRecord): AnyRecord | undefined {
+  const chats = (updates.chats as AnyRecord[] | undefined) ?? [];
+  return chats.find((c) => c._ === "channel");
+}
+
+async function resolveChannelViaInvite(
+  call: (m: string, p: AnyRecord) => Promise<unknown>,
+  hash: string,
+) {
+  let check = (await call("messages.checkChatInvite", { hash })) as AnyRecord;
+  let chat = channelFromInviteCheck(check);
+  if (!chat) {
+    const imported = (await call("messages.importChatInvite", {
+      hash,
+    })) as AnyRecord;
+    chat = channelFromUpdates(imported);
+  }
+  if (!chat || chat._ !== "channel") {
+    throw new Error(`invite ${hash} is not a channel/supergroup`);
+  }
+  return {
+    chat,
+    inputChannel: {
+      _: "inputChannel",
+      channel_id: chat.id,
+      access_hash: chat.access_hash,
+    },
+  };
 }
 
 export function sleep(ms: number): Promise<void> {
@@ -78,6 +131,10 @@ export async function resolveChannel(
   call: (m: string, p: AnyRecord) => Promise<unknown>,
   username: string,
 ) {
+  const inviteHash = parseInviteHash(username);
+  if (inviteHash) {
+    return resolveChannelViaInvite(call, inviteHash);
+  }
   const resolved = (await call("contacts.resolveUsername", {
     username,
   })) as AnyRecord;

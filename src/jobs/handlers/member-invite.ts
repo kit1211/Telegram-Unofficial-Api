@@ -105,6 +105,14 @@ export async function runMemberInvite(payload: MemberInvitePayload): Promise<voi
 
   const targetUsername = parseUsername(payload.targetUsername);
   const { inputChannel } = await locked(() => resolveChannel(call, targetUsername));
+
+  const channelMembers = async (): Promise<number> => {
+    const full = (await call("channels.getFullChannel", {
+      channel: inputChannel,
+    })) as AnyRecord;
+    return Number((full.full_chat as AnyRecord)?.participants_count ?? 0);
+  };
+  const membersAtStart = await locked(() => channelMembers());
   try {
     await locked(() =>
       call("channels.joinChannel", { channel: inputChannel }),
@@ -126,35 +134,30 @@ export async function runMemberInvite(payload: MemberInvitePayload): Promise<voi
 
   const invitedIds = await loadIdSet(invitedKey(jobId));
   const skippedIds = await loadIdSet(skipKey(jobId));
-  const pending = rows.filter((r) => {
-    const id = String(r.user_id);
-    return id !== selfId && !invitedIds.has(id) && !skippedIds.has(id);
-  });
-  const unnamed = pending.filter((r) => !String(r.username ?? "").trim());
-  if (unnamed.length > 0) {
-    const redis = getRedis();
-    for (const row of unnamed) {
-      await redis.sadd(skipKey(jobId), String(row.user_id));
-    }
-    console.log(
-      `[invite] skip ${unnamed.length} users with no username — access_hash in the CSV is not valid for ${accountId}`,
-    );
-  }
-  const queue = pending.filter((r) => String(r.username ?? "").trim());
+  const offset = Math.max(0, payload.offset ?? 0);
+  const pending = rows
+    .filter((r) => {
+      const id = String(r.user_id);
+      return id !== selfId && !invitedIds.has(id) && !skippedIds.has(id);
+    })
+    .slice(offset);
+  const queue = pending;
   const todo = queue.slice(0, Math.max(0, cap - invitedIds.size));
 
   let invited = invitedIds.size;
-  let failed = skippedIds.size + unnamed.length;
+  let failed = skippedIds.size;
   let burst = 0;
   const batchSize = Math.max(1, payload.batch || 1);
 
   console.log(
-    `[invite] job=${jobId} account=${accountId} @${targetUsername} todo=${todo.length} already=${invited} skipped=${failed} batch=${batchSize} delayMs=${payload.delayMs}`,
+    `[invite] job=${jobId} account=${accountId} @${targetUsername} offset=${offset} channelMembers=${membersAtStart} todo=${todo.length} rpcOk=${invited} skipped=${failed} batch=${batchSize} delayMs=${payload.delayMs}`,
   );
 
   const publish = async (message: string, rateLimit?: string) => {
     await patchJobProgress(jobId, {
       invited,
+      inviteRpcOk: invited,
+      channelMembersStart: membersAtStart,
       failed,
       remaining: Math.max(0, queue.length - burst),
       burstInvited: burst,
@@ -168,6 +171,8 @@ export async function runMemberInvite(payload: MemberInvitePayload): Promise<voi
     const cacheKey = `job:${jobId}:invite-hash:${accountId}`;
     const cached = await getRedis().hget(cacheKey, id);
     if (cached) return cached;
+    const csvHash = String(row.access_hash ?? "").trim();
+    if (csvHash) return csvHash;
     const username = String(row.username ?? "").replace(/^@/, "");
     if (!username) return null;
     try {
@@ -227,11 +232,30 @@ export async function runMemberInvite(payload: MemberInvitePayload): Promise<voi
       const message = formatRpcError(error);
       const wait = floodWaitSeconds(error);
       if (wait !== undefined) {
-        console.log(`[invite] FLOOD_WAIT_${wait} — sleep ${wait + 1}s then retry`);
-        await publish(`FLOOD_WAIT_${wait}`, `FLOOD_WAIT_${wait}`);
-        await sleep((wait + 1) * 1000);
-        i -= batchSize;
-        continue;
+        const retryMs = (wait + 1) * 1000;
+        const waits = await getRedis().incr(`job:${jobId}:invite-waits`);
+        await addJobOnce("member.invite", payload, {
+          jobId: childJobId(jobId, `flood-wait-${waits}`),
+          delay: retryMs,
+        });
+        const resumeAt = new Date(Date.now() + retryMs).toISOString();
+        console.log(
+          `[invite] FLOOD_WAIT_${wait} — requeue at ${resumeAt} (no worker sleep)`,
+        );
+        await setJobMeta(jobId, {
+          type: "member.invite",
+          status: "queued",
+          progress: {
+            invited,
+            inviteRpcOk: invited,
+            channelMembersStart: membersAtStart,
+            failed,
+            burstInvited: burst,
+            rateLimit: `FLOOD_WAIT_${wait}`,
+            message: `FLOOD_WAIT_${wait} — retry at ${resumeAt}`,
+          },
+        });
+        return;
       }
       if (/PEER_FLOOD/i.test(message)) {
         const redis = getRedis();
@@ -296,7 +320,7 @@ export async function runMemberInvite(payload: MemberInvitePayload): Promise<voi
         invited++;
         burst++;
         console.log(
-          `[invite] ok user=${id} burst=${burst} cumulative=${invited}`,
+          `[invite] rpc-ok user=${id} burst=${burst} cumulative=${invited} (not always joined)`,
         );
       }
     }
@@ -307,16 +331,22 @@ export async function runMemberInvite(payload: MemberInvitePayload): Promise<voi
   const redis = getRedis();
   const prevMax = Number((await redis.get(burstMaxKey(jobId))) ?? 0);
   await redis.set(burstMaxKey(jobId), String(Math.max(prevMax, burst)), "EX", 86400 * 7);
+  const membersAtEnd = await locked(() => channelMembers());
   await setJobMeta(jobId, {
     type: "member.invite",
     status: "completed",
     progress: {
       invited,
+      inviteRpcOk: invited,
+      channelMembers: membersAtEnd,
+      membersJoinedDelta: membersAtEnd - membersAtStart,
       failed,
       remaining: 0,
       burstInvited: burst,
-      message: "invite list finished",
+      message: `finished — ${membersAtEnd - membersAtStart} joined (channel ${membersAtStart}→${membersAtEnd}), ${invited} invite RPC ok`,
     },
   });
-  console.log(`[invite] done cumulative=${invited} skipped=${failed} burst=${burst}`);
+  console.log(
+    `[invite] done rpcOk=${invited} joinedDelta=${membersAtEnd - membersAtStart} channel=${membersAtEnd} skipped=${failed}`,
+  );
 }

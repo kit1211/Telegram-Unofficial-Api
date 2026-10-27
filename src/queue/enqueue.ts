@@ -83,6 +83,7 @@ function buildPayload(
           limit: Number(p.limit ?? 10),
           delayMs: Number(p.delayMs ?? 2000),
           batch: Number(p.batch ?? 5),
+          offset: Number(p.offset ?? 0),
           accountId: (p.account as string | undefined) ?? accountPool[0],
         },
       };
@@ -307,6 +308,7 @@ export async function resumeMemberInvite(id: string): Promise<{
       limit: Number(p.limit ?? 0),
       delayMs: Number(p.delayMs ?? 3000),
       batch: Number(p.batch ?? 1),
+      offset: Number(p.offset ?? 0),
       accountId,
     },
     { jobId: id },
