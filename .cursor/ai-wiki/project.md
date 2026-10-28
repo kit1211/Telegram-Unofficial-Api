@@ -14,6 +14,12 @@
 - `bun run login:phone` / `login:qr` — CLI (ยังมี); แนะนำ `POST /v1/jobs` type `auth.*`
 - Dump/invite: `POST /v1/jobs` `member.dump` / `member.invite` — ดู [group-members-dump.md](./group-members-dump.md)
 
+## Git
+
+- Remote: https://github.com/kit1211/Telegram-Unofficial-Api (`origin`)
+- Branch เครื่อง Mac: `mac` (track `origin/mac`) — งานที่ยังไม่ขึ้น `master`
+- `master` บน GitHub เป็น snapshot ที่ตัดเบอร์โทรและชื่อกลุ่มตัวอย่างออกแล้ว อย่าพุชทับ `master` ด้วยไฟล์ local ที่มีข้อมูลบัญชี
+
 ## สถานะ
 
 - MTProto client + SQLite session, login เบอร์, RPC services/catalog, reverse WebK map
